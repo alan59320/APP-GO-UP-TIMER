@@ -8,7 +8,8 @@
     content="width=device-width,initial-scale=1,viewport-fit=cover"
   >
 
-  <meta name="theme-color" content="#080611">
+  <meta name="theme-color" content="#06040d">
+
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta
     name="apple-mobile-web-app-status-bar-style"
@@ -26,33 +27,31 @@
 
   <style>
     /* =========================================================
-       GO UP TIMER — MOBILE iOS NEON
+       GO UP TIMER — V2 MOBILE iOS
        ========================================================= */
 
     :root {
-      --bg: #07050d;
-      --bg-2: #0d0919;
-      --card: rgba(20, 15, 38, 0.78);
-      --card-strong: rgba(25, 18, 48, 0.92);
+      --bg: #05030a;
+      --panel: rgba(17, 11, 34, .82);
+      --panel-2: rgba(25, 15, 47, .82);
 
       --white: #ffffff;
-      --muted: #a9a3bc;
-      --muted-2: #706a82;
+      --text: #eee9f8;
+      --muted: #aaa2bb;
+      --dim: #716a80;
 
-      --pink: #ff3cac;
-      --purple: #9b5cff;
-      --blue: #3c9cff;
-      --cyan: #55e6ff;
+      --pink: #ff35bb;
+      --pink-light: #ff76d7;
+      --purple: #9a4dff;
+      --violet: #bd75ff;
+      --blue: #42aaff;
+      --cyan: #3de8ff;
 
-      --green: #45f2a0;
-      --red: #ff5470;
-
-      --border: rgba(173, 117, 255, 0.28);
-      --shadow: rgba(0, 0, 0, 0.55);
+      --green: #30e69c;
+      --red: #ff5275;
+      --yellow: #ffd84d;
 
       --radius: 24px;
-      --safe-top: env(safe-area-inset-top);
-      --safe-bottom: env(safe-area-inset-bottom);
     }
 
     * {
@@ -61,8 +60,8 @@
     }
 
     html {
-      background: var(--bg);
       min-height: 100%;
+      background: var(--bg);
     }
 
     body {
@@ -83,49 +82,61 @@
 
       background:
         radial-gradient(
-          circle at 15% 5%,
-          rgba(145, 62, 255, 0.30),
+          ellipse at 10% 0%,
+          rgba(124, 39, 255, .38),
+          transparent 32%
+        ),
+        radial-gradient(
+          ellipse at 100% 18%,
+          rgba(255, 32, 181, .23),
           transparent 30%
         ),
         radial-gradient(
-          circle at 90% 18%,
-          rgba(255, 47, 175, 0.18),
-          transparent 28%
+          ellipse at 50% 65%,
+          rgba(42, 75, 255, .14),
+          transparent 42%
         ),
         radial-gradient(
-          circle at 50% 100%,
-          rgba(45, 104, 255, 0.18),
-          transparent 38%
+          ellipse at 10% 100%,
+          rgba(104, 37, 255, .20),
+          transparent 35%
         ),
         linear-gradient(
-          145deg,
-          #05040a 0%,
-          #0a0713 45%,
-          #080612 100%
+          160deg,
+          #05030a 0%,
+          #0a0614 50%,
+          #05040c 100%
         );
 
       overflow-x: hidden;
     }
 
+    /* Étoiles discrètes */
+
     body::before {
       content: "";
+
       position: fixed;
       inset: 0;
+
       pointer-events: none;
 
-      background:
-        radial-gradient(circle at 20% 20%, rgba(255,255,255,.08) 0 1px, transparent 1.5px),
-        radial-gradient(circle at 70% 30%, rgba(255,255,255,.06) 0 1px, transparent 1.5px),
-        radial-gradient(circle at 40% 75%, rgba(255,255,255,.05) 0 1px, transparent 1.5px),
-        radial-gradient(circle at 85% 85%, rgba(255,255,255,.05) 0 1px, transparent 1.5px);
+      background-image:
+        radial-gradient(circle, rgba(255,255,255,.32) 0 1px, transparent 1.5px),
+        radial-gradient(circle, rgba(190,140,255,.25) 0 1px, transparent 1.5px),
+        radial-gradient(circle, rgba(100,210,255,.22) 0 1px, transparent 1.5px);
 
       background-size:
-        95px 95px,
-        135px 135px,
-        160px 160px,
-        180px 180px;
+        97px 97px,
+        143px 143px,
+        181px 181px;
 
-      opacity: .55;
+      background-position:
+        10px 20px,
+        30px 80px,
+        80px 40px;
+
+      opacity: .38;
     }
 
     button {
@@ -138,14 +149,16 @@
 
     .app {
       position: relative;
+
       width: 100%;
-      max-width: 560px;
+      max-width: 620px;
+
       margin: 0 auto;
 
       padding:
-        calc(18px + var(--safe-top))
+        calc(18px + env(safe-area-inset-top))
         16px
-        calc(28px + var(--safe-bottom));
+        calc(30px + env(safe-area-inset-bottom));
 
       z-index: 1;
     }
@@ -159,40 +172,47 @@
       align-items: flex-start;
       justify-content: space-between;
 
-      margin-bottom: 18px;
+      margin-bottom: 12px;
     }
 
     .brand {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
+      min-width: 0;
     }
 
     .eyebrow {
+      margin-bottom: 3px;
+
       font-size: 13px;
-      font-weight: 700;
-      letter-spacing: .22em;
-      color: #d8d2e6;
+      line-height: 1;
+
+      font-weight: 800;
+      letter-spacing: .30em;
+
+      color: #e7dff1;
 
       text-transform: uppercase;
+
+      text-shadow:
+        0 0 12px rgba(173, 90, 255, .55);
     }
 
     h1 {
       margin: 0;
 
-      font-size: clamp(39px, 12vw, 58px);
-      line-height: .88;
+      font-size: clamp(49px, 15vw, 74px);
+      line-height: .86;
 
-      font-weight: 900;
-      letter-spacing: -0.07em;
+      font-weight: 950;
+      letter-spacing: -.075em;
 
       background:
         linear-gradient(
           100deg,
-          #ffffff 5%,
-          #ff72d0 42%,
-          #a65cff 72%,
-          #55b9ff 100%
+          #ffffff 0%,
+          #ffd5f3 19%,
+          #ff62c7 44%,
+          #bd68ff 69%,
+          #55aaff 100%
         );
 
       -webkit-background-clip: text;
@@ -200,66 +220,84 @@
       color: transparent;
 
       filter:
-        drop-shadow(0 0 12px rgba(198, 73, 255, .35));
+        drop-shadow(0 0 12px rgba(255, 54, 195, .25))
+        drop-shadow(0 0 25px rgba(135, 74, 255, .18));
     }
 
     .tagline {
-      margin-top: 11px;
+      margin-top: 14px;
 
       font-size: 10px;
-      font-weight: 700;
-      letter-spacing: .18em;
+      line-height: 1.3;
 
-      color: #d5cede;
+      font-weight: 800;
+      letter-spacing: .21em;
+
+      color: #ddd6e8;
 
       text-transform: uppercase;
     }
 
+    /* =========================================================
+       REFRESH
+       ========================================================= */
+
     .refresh {
-      width: 46px;
-      height: 46px;
+      flex: 0 0 auto;
+
+      width: 50px;
+      height: 50px;
 
       margin-top: 3px;
 
-      border: 1px solid rgba(255,255,255,.14);
-      border-radius: 15px;
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 17px;
 
       color: white;
 
       background:
         linear-gradient(
           145deg,
-          rgba(255,255,255,.12),
-          rgba(255,255,255,.04)
+          rgba(255,255,255,.14),
+          rgba(255,255,255,.045)
         );
 
       box-shadow:
-        0 8px 25px rgba(0,0,0,.25),
-        inset 0 0 18px rgba(145,90,255,.10);
+        0 12px 28px rgba(0,0,0,.28),
+        inset 0 1px 0 rgba(255,255,255,.12),
+        0 0 22px rgba(141,76,255,.10);
 
-      font-size: 25px;
+      font-size: 28px;
       line-height: 1;
 
       cursor: pointer;
     }
 
     .refresh:active {
-      transform: scale(.94);
+      transform: scale(.92);
     }
 
     /* =========================================================
-       STATUS API
+       STATUS
        ========================================================= */
 
     .status {
-      min-height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-      margin-bottom: 12px;
+      min-height: 25px;
 
-      font-size: 11px;
+      margin: 6px 0 17px;
+
       color: var(--muted);
 
-      text-align: center;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .status::first-letter {
+      color: var(--green);
     }
 
     /* =========================================================
@@ -270,45 +308,45 @@
       position: relative;
 
       margin-bottom: 14px;
-      padding: 18px;
 
-      border: 1px solid var(--border);
+      border: 1px solid rgba(159, 80, 255, .34);
       border-radius: var(--radius);
 
       background:
         linear-gradient(
           145deg,
-          rgba(35, 24, 61, .84),
-          rgba(10, 8, 20, .82)
+          rgba(37, 20, 63, .80),
+          rgba(10, 7, 20, .87)
         );
 
       box-shadow:
         0 18px 50px rgba(0,0,0,.38),
-        inset 0 1px 0 rgba(255,255,255,.06);
+        inset 0 1px 0 rgba(255,255,255,.055);
 
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
 
       overflow: hidden;
     }
 
-    .card::before {
+    .card::after {
       content: "";
 
       position: absolute;
-      top: -100px;
-      right: -100px;
 
-      width: 200px;
-      height: 200px;
+      top: -90px;
+      right: -90px;
+
+      width: 190px;
+      height: 190px;
 
       border-radius: 50%;
 
       background:
         radial-gradient(
           circle,
-          rgba(164,75,255,.18),
-          transparent 68%
+          rgba(177,78,255,.16),
+          transparent 70%
         );
 
       pointer-events: none;
@@ -318,15 +356,22 @@
       display: none !important;
     }
 
+    /* =========================================================
+       TITRES DE SECTION
+       ========================================================= */
+
     .label,
     .section-title {
       position: relative;
 
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: .13em;
+      z-index: 2;
 
-      color: #d5cde4;
+      font-size: 11px;
+      font-weight: 850;
+
+      letter-spacing: .16em;
+
+      color: #d9d1e5;
 
       text-transform: uppercase;
     }
@@ -335,52 +380,80 @@
       content: "⚡";
 
       display: inline-block;
-      margin-right: 7px;
 
-      color: #ffca54;
+      margin-right: 8px;
+
+      color: #ffca4c;
 
       filter:
-        drop-shadow(0 0 8px rgba(255,190,50,.6));
+        drop-shadow(0 0 7px rgba(255,196,61,.65));
     }
 
     /* =========================================================
-       NEXT EVENT
+       PROCHAIN ÉVÉNEMENT
        ========================================================= */
 
     .next {
-      padding: 21px 18px 20px;
+      padding: 21px 18px 19px;
 
-      border-color: rgba(170, 91, 255, .48);
+      border-color: rgba(171, 77, 255, .56);
 
       background:
         radial-gradient(
-          circle at 10% 20%,
-          rgba(255,57,190,.12),
-          transparent 32%
+          ellipse at 0% 0%,
+          rgba(255,48,190,.13),
+          transparent 38%
         ),
         radial-gradient(
-          circle at 90% 80%,
-          rgba(60,150,255,.13),
-          transparent 35%
+          ellipse at 100% 100%,
+          rgba(45,121,255,.15),
+          transparent 42%
         ),
         linear-gradient(
           145deg,
-          rgba(30, 19, 55, .94),
-          rgba(9, 7, 19, .94)
+          rgba(35,18,61,.93),
+          rgba(8,6,17,.94)
         );
 
       box-shadow:
-        0 20px 55px rgba(0,0,0,.45),
-        0 0 35px rgba(136,61,255,.10),
-        inset 0 1px 0 rgba(255,255,255,.07);
+        0 20px 55px rgba(0,0,0,.48),
+        0 0 35px rgba(148,59,255,.13),
+        inset 0 1px 0 rgba(255,255,255,.08);
+    }
+
+    .next::before {
+      content: "";
+
+      position: absolute;
+
+      left: -70px;
+      bottom: -80px;
+
+      width: 190px;
+      height: 190px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(255,50,191,.11),
+          transparent 70%
+        );
+
+      pointer-events: none;
     }
 
     .event-title {
+      position: relative;
+      z-index: 2;
+
       display: flex;
       align-items: center;
-      gap: 10px;
 
-      margin-top: 13px;
+      gap: 11px;
+
+      margin-top: 14px;
 
       min-width: 0;
     }
@@ -388,77 +461,163 @@
     .event-title span:first-child {
       flex: 0 0 auto;
 
-      font-size: 34px;
+      width: 54px;
+      height: 54px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 39px;
       line-height: 1;
+
+      filter:
+        drop-shadow(0 0 8px rgba(255,255,255,.16));
     }
 
     .event-title span:last-child {
       min-width: 0;
 
-      font-size: clamp(27px, 8vw, 40px);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      font-size: clamp(29px, 9vw, 44px);
       line-height: 1;
 
       font-weight: 900;
-      letter-spacing: -.045em;
-
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      letter-spacing: -.055em;
 
       background:
         linear-gradient(
           100deg,
-          #ffffff,
-          #f3dfff 45%,
-          #a987ff
+          #ffffff 0%,
+          #f9eaff 45%,
+          #bd9cff 100%
         );
 
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
+
+      text-shadow:
+        0 0 20px rgba(187,111,255,.16);
     }
 
+    /* =========================================================
+       COUNTDOWN
+       ========================================================= */
+
     .countdown {
-      margin-top: 17px;
+      position: relative;
+      z-index: 2;
+
+      margin-top: 18px;
 
       font-variant-numeric: tabular-nums;
 
-      font-size: clamp(42px, 13vw, 65px);
-      line-height: .95;
+      font-size: clamp(47px, 15vw, 76px);
+      line-height: .92;
 
-      font-weight: 800;
-      letter-spacing: -.055em;
-
-      color: #fff;
-
-      text-shadow:
-        0 0 8px rgba(255,255,255,.18),
-        0 0 25px rgba(154,77,255,.32);
+      font-weight: 850;
+      letter-spacing: -.065em;
 
       white-space: nowrap;
-    }
 
-    .next .countdown {
       background:
         linear-gradient(
           100deg,
-          #ff65c8,
-          #b56cff 45%,
-          #57baff 90%
+          #ff48bd 0%,
+          #d75eff 38%,
+          #a06cff 65%,
+          #5ab7ff 100%
         );
 
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
+
+      filter:
+        drop-shadow(0 0 11px rgba(255,54,192,.27))
+        drop-shadow(0 0 25px rgba(130,79,255,.20));
     }
 
     .sub {
-      margin-top: 8px;
+      position: relative;
+      z-index: 2;
 
-      font-size: 12px;
-      color: var(--muted);
+      margin-top: 10px;
 
-      letter-spacing: .03em;
+      font-size: 13px;
+      color: #bcb4c9;
+
+      letter-spacing: .02em;
+    }
+
+    /* =========================================================
+       BARRE DE PROGRESSION
+       ========================================================= */
+
+    .progress-wrap {
+      position: relative;
+      z-index: 2;
+
+      display: flex;
+      align-items: center;
+
+      gap: 10px;
+
+      margin-top: 17px;
+    }
+
+    .progress {
+      flex: 1;
+
+      height: 9px;
+
+      border-radius: 999px;
+
+      overflow: hidden;
+
+      background:
+        rgba(44, 37, 69, .95);
+
+      border: 1px solid rgba(255,255,255,.06);
+
+      box-shadow:
+        inset 0 2px 4px rgba(0,0,0,.35);
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+
+      border-radius: inherit;
+
+      background:
+        linear-gradient(
+          90deg,
+          #ff40bd,
+          #c45fff 48%,
+          #45c5ff
+        );
+
+      box-shadow:
+        0 0 10px rgba(255,65,190,.48);
+
+      transition:
+        width .5s ease;
+    }
+
+    .progress-percent {
+      min-width: 36px;
+
+      font-size: 11px;
+      font-weight: 700;
+
+      color: #d6cce1;
+
+      text-align: right;
     }
 
     /* =========================================================
@@ -466,19 +625,25 @@
        ========================================================= */
 
     .live {
-      border-color: rgba(255, 75, 104, .45);
+      padding: 18px;
+
+      border-color: rgba(255,76,110,.45);
 
       background:
         radial-gradient(
-          circle at 80% 0%,
-          rgba(255,45,92,.16),
-          transparent 35%
+          circle at 100% 0%,
+          rgba(255,50,90,.15),
+          transparent 38%
         ),
-        var(--card);
+        linear-gradient(
+          145deg,
+          rgba(52,17,40,.87),
+          rgba(12,7,19,.90)
+        );
     }
 
     .live .label {
-      color: #ff8294;
+      color: #ff8d9f;
     }
 
     .live .label::before {
@@ -491,36 +656,38 @@
        ========================================================= */
 
     .notifications {
-      padding: 15px;
+      padding: 16px;
     }
 
     .notifications .section-title {
-      margin-bottom: 11px;
+      margin-bottom: 12px;
     }
 
     .push-button {
+      position: relative;
+
       width: 100%;
-      min-height: 52px;
+      min-height: 55px;
 
-      border: 1px solid rgba(79, 241, 166, .35);
-      border-radius: 16px;
+      border: 1px solid rgba(68,236,191,.43);
+      border-radius: 18px;
 
-      color: #fff;
+      color: white;
 
       background:
         linear-gradient(
-          135deg,
-          rgba(65, 242, 160, .16),
-          rgba(48, 140, 255, .10)
+          110deg,
+          rgba(39,181,166,.18),
+          rgba(54,119,255,.12)
         );
 
       box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.06),
-        0 8px 25px rgba(0,0,0,.20);
+        inset 0 1px 0 rgba(255,255,255,.07),
+        0 10px 28px rgba(0,0,0,.20);
 
       font-size: 12px;
-      font-weight: 800;
-      letter-spacing: .04em;
+      font-weight: 850;
+      letter-spacing: .05em;
 
       cursor: pointer;
     }
@@ -530,45 +697,48 @@
     }
 
     .push-status {
-      margin-top: 9px;
+      margin-top: 10px;
 
-      font-size: 11px;
+      font-size: 12px;
       line-height: 1.45;
 
-      color: var(--muted);
+      color: #aaa2b8;
     }
 
     /* =========================================================
-       EVENT LIST
+       LISTE DES ÉVÉNEMENTS
        ========================================================= */
 
     .schedule {
-      padding: 16px;
+      padding: 16px 14px 14px;
     }
 
     .schedule .section-title {
       display: flex;
       align-items: center;
 
-      margin-bottom: 13px;
+      margin: 2px 4px 13px;
     }
 
     .schedule .section-title::before {
       content: "📅";
 
-      margin-right: 7px;
+      margin-right: 8px;
+
+      font-size: 15px;
     }
 
     #events {
       display: flex;
       flex-direction: column;
-      gap: 9px;
+
+      gap: 8px;
     }
 
     /*
-      Les éléments générés par app.js peuvent avoir
-      différentes classes. Ces styles donnent une apparence
-      cohérente aux lignes d'événements.
+      Styles des éléments créés par app.js.
+      La structure exacte de chaque événement peut varier :
+      ces règles restent donc volontairement générales.
     */
 
     #events > * {
@@ -576,23 +746,53 @@
 
       display: flex;
       align-items: center;
-      gap: 11px;
 
-      min-height: 64px;
-      padding: 10px 12px;
+      min-height: 62px;
 
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: 17px;
+      padding: 9px 12px;
+
+      border: 1px solid rgba(157,132,193,.18);
+      border-radius: 18px;
 
       background:
         linear-gradient(
           135deg,
-          rgba(255,255,255,.055),
+          rgba(255,255,255,.065),
           rgba(255,255,255,.018)
         );
 
       box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.035);
+        inset 0 1px 0 rgba(255,255,255,.035),
+        0 5px 16px rgba(0,0,0,.13);
+
+      overflow: hidden;
+    }
+
+    /*
+      Petite ligne lumineuse à gauche.
+    */
+
+    #events > *::before {
+      content: "";
+
+      position: absolute;
+
+      left: 0;
+      top: 0;
+      bottom: 0;
+
+      width: 3px;
+
+      background:
+        linear-gradient(
+          180deg,
+          #ff4fc5,
+          #914eff,
+          #43aaff
+        );
+
+      box-shadow:
+        0 0 10px rgba(190,75,255,.35);
     }
 
     #events > *:active {
@@ -600,22 +800,28 @@
     }
 
     #events img {
-      width: 39px;
-      height: 39px;
+      flex: 0 0 auto;
+
+      width: 40px;
+      height: 40px;
+
+      margin-left: 3px;
 
       object-fit: contain;
 
-      border-radius: 12px;
+      border-radius: 11px;
     }
 
     #events strong {
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 800;
+
+      color: #f6f2fa;
     }
 
     #events small {
-      color: var(--muted);
       font-size: 11px;
+      color: #a9a0b8;
     }
 
     /* =========================================================
@@ -625,63 +831,87 @@
     footer {
       display: flex;
       justify-content: space-between;
-      gap: 12px;
+      align-items: center;
 
-      padding: 8px 4px 0;
+      gap: 10px;
 
-      color: var(--muted-2);
+      margin-top: 2px;
+      padding: 5px 5px 0;
+
+      color: #716a80;
 
       font-size: 9px;
-      letter-spacing: .04em;
+      letter-spacing: .035em;
     }
 
     /* =========================================================
-       IPHONE PETITS ÉCRANS
+       PETITS IPHONE
        ========================================================= */
 
-    @media (max-width: 360px) {
+    @media (max-width: 375px) {
+
       .app {
         padding-left: 12px;
         padding-right: 12px;
       }
 
+      h1 {
+        font-size: 48px;
+      }
+
+      .tagline {
+        font-size: 9px;
+        letter-spacing: .16em;
+      }
+
+      .refresh {
+        width: 45px;
+        height: 45px;
+      }
+
       .card {
-        padding: 15px;
         border-radius: 21px;
       }
 
+      .next {
+        padding: 18px 15px;
+      }
+
       .event-title span:first-child {
-        font-size: 29px;
+        width: 46px;
+        height: 46px;
+        font-size: 33px;
       }
 
       .event-title span:last-child {
-        font-size: 27px;
+        font-size: 30px;
       }
 
       .countdown {
-        font-size: 40px;
+        font-size: 44px;
       }
 
-      .push-button {
-        font-size: 10px;
+      #events > * {
+        min-height: 58px;
       }
     }
 
     /* =========================================================
-       IPAD / ÉCRANS PLUS LARGES
+       IPAD / GRAND ÉCRAN
        ========================================================= */
 
     @media (min-width: 700px) {
+
       body {
-        padding: 30px 0;
+        padding: 25px 0;
       }
 
       .app {
         max-width: 720px;
       }
 
-      .next .countdown {
-        font-size: 72px;
+      .countdown {
+        font-size: 76px;
       }
     }
 
@@ -690,10 +920,10 @@
        ========================================================= */
 
     @media (prefers-reduced-motion: reduce) {
+
       *,
       *::before,
       *::after {
-        scroll-behavior: auto !important;
         animation-duration: .01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: .01ms !important;
@@ -738,7 +968,7 @@
 
 
     <!-- =====================================================
-         API STATUS
+         STATUT API
          ===================================================== -->
 
     <section
@@ -764,8 +994,11 @@
       </div>
 
       <div class="event-title">
+
         <span id="liveEmoji"></span>
+
         <span id="liveName"></span>
+
       </div>
 
       <div
@@ -819,6 +1052,28 @@
         —
       </div>
 
+      <!-- Barre visuelle -->
+
+      <div class="progress-wrap">
+
+        <div class="progress">
+
+          <div
+            id="progressBar"
+            class="progress-bar"
+          ></div>
+
+        </div>
+
+        <div
+          id="progressPercent"
+          class="progress-percent"
+        >
+          —
+        </div>
+
+      </div>
+
     </section>
 
 
@@ -859,12 +1114,7 @@
         TOUS LES ÉVÉNEMENTS
       </div>
 
-      <div id="events">
-        <!--
-          Ton app.js remplira automatiquement cette zone
-          avec les événements récupérés depuis ton API.
-        -->
-      </div>
+      <div id="events"></div>
 
     </section>
 
@@ -888,11 +1138,98 @@
   </main>
 
 
+  <script src="app.js"></script>
+
+
   <!-- =======================================================
-       JAVASCRIPT EXISTANT
+       PROGRESSION DU PROCHAIN ÉVÉNEMENT
        ======================================================= -->
 
-  <script src="app.js"></script>
+  <script>
+    /*
+     * Cette partie ajoute uniquement l'affichage de la barre
+     * de progression.
+     *
+     * Elle ne modifie pas le fonctionnement de l'API.
+     */
+
+    (function () {
+
+      const bar = document.getElementById("progressBar");
+      const percent = document.getElementById("progressPercent");
+
+      if (!bar || !percent) return;
+
+      function updateProgress() {
+
+        /*
+         * On essaie de récupérer le texte du compte à rebours.
+         * Exemple :
+         * 00:05:33
+         */
+
+        const countdown = document.getElementById("nextCountdown");
+
+        if (!countdown) return;
+
+        const value = countdown.textContent.trim();
+
+        const match = value.match(
+          /^(\d+):(\d{2}):(\d{2})$/
+        );
+
+        if (!match) {
+          bar.style.width = "0%";
+          percent.textContent = "—";
+          return;
+        }
+
+        const hours = Number(match[1]);
+        const minutes = Number(match[2]);
+        const seconds = Number(match[3]);
+
+        const remaining =
+          hours * 3600 +
+          minutes * 60 +
+          seconds;
+
+        /*
+         * La barre représente la progression dans les
+         * 10 dernières minutes avant l'événement.
+         *
+         * En dehors de cette fenêtre, elle reste à 0%.
+         */
+
+        const tenMinutes = 10 * 60;
+
+        if (remaining <= tenMinutes && remaining > 0) {
+
+          const progress =
+            ((tenMinutes - remaining) / tenMinutes) * 100;
+
+          const safeProgress =
+            Math.max(0, Math.min(100, progress));
+
+          bar.style.width =
+            safeProgress.toFixed(0) + "%";
+
+          percent.textContent =
+            Math.round(safeProgress) + "%";
+
+        } else {
+
+          bar.style.width = "0%";
+          percent.textContent = "—";
+
+        }
+      }
+
+      updateProgress();
+
+      setInterval(updateProgress, 1000);
+
+    })();
+  </script>
 
 </body>
 </html>
