@@ -23,10 +23,23 @@ function normalizeBase64Url(value) {
     .replace(/=+$/g, "");
 }
 
-const VAPID_PUBLIC_KEY = normalizeBase64Url(process.env.VAPID_PUBLIC_KEY);
-const VAPID_PRIVATE_KEY = normalizeBase64Url(process.env.VAPID_PRIVATE_KEY);
-const VAPID_SUBJECT = (process.env.VAPID_SUBJECT || "mailto:admin@example.com").trim();
+const VAPID_PUBLIC_KEY = String(process.env.VAPID_PUBLIC_KEY || "")
+  .trim()
+  .replace(/Public\s*Key\s*:/gi, "")
+  .replace(/[\s"'`]/g, "")
+  .replace(/\+/g, "-")
+  .replace(/\//g, "_")
+  .replace(/=+$/g, "");
 
+const VAPID_PRIVATE_KEY = String(process.env.VAPID_PRIVATE_KEY || "")
+  .trim()
+  .replace(/Private\s*Key\s*:/gi, "")
+  .replace(/[\s"'`]/g, "")
+  .replace(/\+/g, "-")
+  .replace(/\//g, "_")
+  .replace(/=+$/g, "");
+
+const VAPID_SUBJECT = (process.env.VAPID_SUBJECT || "").trim();
 // Railway n'ayant pas besoin de PostgreSQL pour faire tourner le site,
 // les données Push sont stockées dans des fichiers JSON. Si tu ajoutes plus
 // tard un Railway Volume monté sur /data, les abonnements resteront persistants.
