@@ -382,8 +382,8 @@ function scheduleEventReminder(event) {
       console.log(`ð Rappel -10 min : ${emoji} ${name}`);
 
       const result = await sendPush({
-        title: "â° GO UP TIMER",
-        body: `${emoji} ${name} dans 10 minutes !`,
+        title: "GO UP TIMER",
+        body: `${emoji} ${name} dans 10 minutes ‼️`,
         icon: "/icon-192.png",
         badge: "/icon-192.png",
         tag: `go-up-${key}`,
