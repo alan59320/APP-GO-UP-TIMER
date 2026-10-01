@@ -71,7 +71,7 @@ async function load(){
     data=await res.json();
     if(!data.success) throw new Error("API indisponible");
     lastFetch=Date.now();
-    $("status").textContent="● API connectée";
+    $("status").textContent="BY 🍁𝔸𝕝𝕒𝕟🍁";
     $("status").classList.remove("error");
     render();
   }catch(e){
