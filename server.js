@@ -40,9 +40,7 @@ const VAPID_PRIVATE_KEY = String(process.env.VAPID_PRIVATE_KEY || "")
   .replace(/=+$/g, "");
 
 const VAPID_SUBJECT = (process.env.VAPID_SUBJECT || "").trim();
-// Railway n'ayant pas besoin de PostgreSQL pour faire tourner le site,
-// les données Push sont stockées dans des fichiers JSON. Si tu ajoutes plus
-// tard un Railway Volume monté sur /data, les abonnements resteront persistants.
+
 const preferredDataDir = process.env.DATA_DIR || "/data";
 const fallbackDataDir = path.join(__dirname, "data");
 let DATA_DIR = preferredDataDir;
@@ -81,7 +79,7 @@ function queueWrite(file, data) {
     await fsp.writeFile(temp, JSON.stringify(data, null, 2), "utf8");
     await fsp.rename(temp, file);
   }).catch((error) => {
-    console.error(`❌ Écriture stockage ${file}:`, error.message);
+    console.error(`â Ãcriture stockage ${file}:`, error.message);
   });
 
   return storageWriteQueue;
@@ -99,8 +97,8 @@ async function initStorage() {
   await queueWrite(SUBSCRIPTIONS_FILE, subscriptions);
   await queueWrite(REMINDERS_FILE, reminderDeliveries);
 
-  console.log(`💾 Stockage local activé : ${DATA_DIR}`);
-  console.log(`🔔 ${subscriptions.length} abonnement(s) Push chargé(s).`);
+  console.log(`ð¾ Stockage local activÃ© : ${DATA_DIR}`);
+  console.log(`ð ${subscriptions.length} abonnement(s) Push chargÃ©(s).`);
 }
 
 if (VAPID_PUBLIC_KEY && VAPID_PRIVATE_KEY) {
@@ -109,10 +107,10 @@ if (VAPID_PUBLIC_KEY && VAPID_PRIVATE_KEY) {
     VAPID_PUBLIC_KEY,
     VAPID_PRIVATE_KEY
   );
-  console.log("🔔 Web Push activé.");
+  console.log("ð Web Push activÃ©.");
 } else {
   console.warn(
-    "⚠️ VAPID_PUBLIC_KEY / VAPID_PRIVATE_KEY manquantes : les notifications Push sont désactivées."
+    "â ï¸ VAPID_PUBLIC_KEY / VAPID_PRIVATE_KEY manquantes : les notifications Push sont dÃ©sactivÃ©es."
   );
 }
 
@@ -145,7 +143,7 @@ async function saveSubscription(subscription) {
   }
 
   await queueWrite(SUBSCRIPTIONS_FILE, subscriptions);
-  console.log("🔔 Abonnement Push enregistré.");
+  console.log("ð Abonnement Push enregistrÃ©.");
   return true;
 }
 
@@ -178,9 +176,9 @@ async function sendPush(payload) {
         if (status === 404 || status === 410) {
           expired.push(subscription.endpoint);
           removed += 1;
-          console.log("🗑️ Abonnement Push supprimé (expiré/invalide).");
+          console.log("ðï¸ Abonnement Push supprimÃ© (expirÃ©/invalide).");
         } else {
-          console.error("❌ Erreur Push:", status || error.message);
+          console.error("â Erreur Push:", status || error.message);
         }
       }
     })
@@ -195,7 +193,6 @@ async function sendPush(payload) {
   return { sent, removed };
 }
 
-// Empêche les doublons pendant un redémarrage du processus.
 async function claimReminder(eventKey, eventName, eventTime) {
   if (reminderDeliveries[eventKey]) return false;
 
@@ -209,7 +206,6 @@ async function claimReminder(eventKey, eventName, eventTime) {
   return true;
 }
 
-// Nettoyage des anciens rappels pour que le fichier reste petit.
 async function cleanupReminders() {
   const cutoff = Date.now() - 14 * 24 * 60 * 60 * 1000;
   let changed = false;
@@ -267,10 +263,10 @@ app.post("/api/push/subscribe", async (req, res) => {
 
     res.json({
       success: true,
-      message: "Notifications activées"
+      message: "Notifications activÃ©es"
     });
   } catch (error) {
-    console.error("❌ Enregistrement Push:", error.message);
+    console.error("â Enregistrement Push:", error.message);
     res.status(500).json({
       success: false,
       error: "Impossible d'enregistrer l'abonnement"
@@ -283,7 +279,7 @@ app.post("/api/push/unsubscribe", async (req, res) => {
     await removeSubscription(req.body?.endpoint);
     res.json({ success: true });
   } catch (error) {
-    console.error("❌ Suppression Push:", error.message);
+    console.error("â Suppression Push:", error.message);
     res.status(500).json({ success: false });
   }
 });
@@ -297,6 +293,39 @@ app.get("/api/push/status", async (req, res) => {
     subscribers: subscriptions.length,
     reminderMinutes: REMINDER_MINUTES
   });
+});
+
+// ð§ª TEST MANUEL D'UNE NOTIFICATION PUSH
+app.get("/api/push/test", async (req, res) => {
+  try {
+    const result = await sendPush({
+      title: "ð GO UP TIMER",
+      body: "ð Test de notification rÃ©ussi !",
+      icon: "/icon-192.png",
+      badge: "/icon-192.png",
+      tag: "go-up-test",
+      renotify: true,
+      data: {
+        url: "/"
+      }
+    });
+
+    console.log(
+      `ð§ª TEST PUSH : ${result.sent} envoyÃ©(s), ${result.removed} supprimÃ©(s).`
+    );
+
+    res.json({
+      success: true,
+      ...result
+    });
+  } catch (error) {
+    console.error("â Test Push :", error);
+
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
 });
 
 const scheduled = new Map();
@@ -340,20 +369,20 @@ function scheduleEventReminder(event) {
   const timeout = setTimeout(async () => {
     scheduled.delete(key);
 
-    const name = event.displayName || event.name || "Événement";
-    const emoji = event.emoji || "🎯";
+    const name = event.displayName || event.name || "ÃvÃ©nement";
+    const emoji = event.emoji || "ð¯";
 
     try {
       const claimed = await claimReminder(key, name, eventTime);
       if (!claimed) {
-        console.log(`ℹ️ Rappel déjà envoyé : ${emoji} ${name}`);
+        console.log(`â¹ï¸ Rappel dÃ©jÃ  envoyÃ© : ${emoji} ${name}`);
         return;
       }
 
-      console.log(`🔔 Rappel -10 min : ${emoji} ${name}`);
+      console.log(`ð Rappel -10 min : ${emoji} ${name}`);
 
       const result = await sendPush({
-        title: "⏰ GO UP TIMER",
+        title: "â° GO UP TIMER",
         body: `${emoji} ${name} dans 10 minutes !`,
         icon: "/icon-192.png",
         badge: "/icon-192.png",
@@ -366,9 +395,9 @@ function scheduleEventReminder(event) {
         }
       });
 
-      console.log(`📨 Push : ${result.sent} envoyé(s), ${result.removed} supprimé(s).`);
+      console.log(`ð¨ Push : ${result.sent} envoyÃ©(s), ${result.removed} supprimÃ©(s).`);
     } catch (error) {
-      console.error("❌ Rappel Push:", error.message);
+      console.error("â Rappel Push:", error.message);
     }
   }, Math.max(0, delay));
 
@@ -392,7 +421,7 @@ async function checkEventsAndSchedule() {
       scheduleEventReminder(event);
     }
   } catch (error) {
-    console.error("⚠️ Vérification des événements impossible:", error.message);
+    console.error("â ï¸ VÃ©rification des Ã©vÃ©nements impossible:", error.message);
   }
 }
 
@@ -410,13 +439,13 @@ async function start() {
 
   app.listen(PORT, "0.0.0.0", () => {
     console.log(`GO UP TIMER WebApp running on port ${PORT}`);
-    console.log(`API événements : ${API_URL}`);
-    console.log(`⏰ Rappels : ${REMINDER_MINUTES} minutes avant`);
+    console.log(`API Ã©vÃ©nements : ${API_URL}`);
+    console.log(`â° Rappels : ${REMINDER_MINUTES} minutes avant`);
   });
 }
 
 async function shutdown(signal) {
-  console.log(`🛑 ${signal} reçu, arrêt propre...`);
+  console.log(`ð ${signal} reÃ§u, arrÃªt propre...`);
   for (const timeout of scheduled.values()) clearTimeout(timeout);
   await storageWriteQueue;
   process.exit(0);
@@ -426,6 +455,6 @@ process.on("SIGTERM", () => shutdown("SIGTERM"));
 process.on("SIGINT", () => shutdown("SIGINT"));
 
 start().catch((error) => {
-  console.error("❌ Erreur de démarrage:", error);
+  console.error("â Erreur de dÃ©marrage:", error);
   process.exit(1);
 });
