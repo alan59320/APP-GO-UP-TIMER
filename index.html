@@ -936,6 +936,27 @@
         transition-duration: .01ms !important;
       }
     }
+
+    /* =========================================================
+   ESPACEMENT ÉVÉNEMENT / HORAIRE
+   ========================================================= */
+
+#events .row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#events .row .name {
+  flex: 1;
+  min-width: 0;
+}
+
+#events .row .time {
+  flex: 0 0 auto;
+  margin-left: 20px;
+  white-space: nowrap;
+}
   </style>
 </head>
 
