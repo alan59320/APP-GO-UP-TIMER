@@ -32,38 +32,51 @@ footer{display:flex;justify-content:space-between;color:#666;font-size:10px;padd
 .push-status{text-align:center;color:#888;font-size:11px;line-height:1.4;margin-top:10px}
 .push-status{text-align:center;color:#888;font-size:11px;line-height:1.4;margin-top:10px}
 /* =========================================================
-   🎃 HALLOWEEN HEADER ANIMÉ
+   🎃 HALLOWEEN HEADER — CORRECTION
    ========================================================= */
 
+.app {
+  position: relative;
+  isolation: isolate;
+}
+
+/* Zone décorative indépendante du flux du header */
 .top-halloween {
   position: absolute;
 
-  top: 78px;
+  top: 0;
   left: 0;
   right: 0;
 
-  height: 45px;
+  height: 125px;
 
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   gap: 13px;
 
-  pointer-events: none;
+  padding-top: 8px;
 
-  z-index: 5;
+  pointer-events: none;
+  z-index: 20;
 
   overflow: visible;
 }
 
-
-/* =========================================================
-   🦇 CHAUVE-SOURIS
-   ========================================================= */
-
-.top-bat {
+/*
+   On donne à chaque emoji sa propre couche.
+   Cela évite qu'un transform appliqué par une animation
+   soit neutralisé par le conteneur.
+*/
+.top-halloween > span {
+  position: relative;
   display: inline-block;
+  flex: 0 0 auto;
+  will-change: transform, opacity, filter;
+}
 
+/* 🦇 CHAUVE-SOURIS */
+.top-bat {
   font-size: 19px;
 
   filter:
@@ -73,54 +86,32 @@ footer{display:flex;justify-content:space-between;color:#666;font-size:10px;padd
   animation: topBat 2.8s ease-in-out infinite;
 }
 
-.bat-a {
-  animation-delay: 0s;
-}
-
+.bat-a { animation-delay: 0s; }
 .bat-b {
   animation-delay: 1.3s;
   font-size: 16px;
 }
 
 @keyframes topBat {
-
   0%, 100% {
-    transform:
-      translateY(2px)
-      rotate(-5deg)
-      scale(1);
+    transform: translate3d(0, 5px, 0) rotate(-5deg) scale(1);
   }
 
   25% {
-    transform:
-      translateY(-5px)
-      rotate(7deg)
-      scale(1.06);
+    transform: translate3d(-4px, -13px, 0) rotate(7deg) scale(1.06);
   }
 
   50% {
-    transform:
-      translateY(2px)
-      rotate(-4deg)
-      scale(.94);
+    transform: translate3d(3px, 5px, 0) rotate(-4deg) scale(.94);
   }
 
   75% {
-    transform:
-      translateY(-4px)
-      rotate(5deg)
-      scale(1.04);
+    transform: translate3d(6px, -9px, 0) rotate(5deg) scale(1.04);
   }
 }
 
-
-/* =========================================================
-   🎃 CITROUILLES
-   ========================================================= */
-
+/* 🎃 CITROUILLES */
 .top-pumpkin {
-  display: inline-block;
-
   font-size: 20px;
 
   filter:
@@ -142,22 +133,16 @@ footer{display:flex;justify-content:space-between;color:#666;font-size:10px;padd
 }
 
 @keyframes topPumpkinFloat {
-
   0%, 100% {
-    transform:
-      translateY(1px)
-      rotate(-4deg);
+    transform: translate3d(0, 4px, 0) rotate(-4deg);
   }
 
   50% {
-    transform:
-      translateY(-7px)
-      rotate(5deg);
+    transform: translate3d(0, -14px, 0) rotate(5deg);
   }
 }
 
 @keyframes topPumpkinGlow {
-
   0%, 100% {
     filter:
       drop-shadow(0 0 4px rgba(255,120,0,.55))
@@ -171,16 +156,9 @@ footer{display:flex;justify-content:space-between;color:#666;font-size:10px;padd
   }
 }
 
-
-/* =========================================================
-   🕸️ TOILES
-   ========================================================= */
-
+/* 🕸️ TOILES */
 .top-web {
-  display: inline-block;
-
   font-size: 20px;
-
   opacity: .8;
 
   filter:
@@ -189,9 +167,7 @@ footer{display:flex;justify-content:space-between;color:#666;font-size:10px;padd
   animation: topWeb 4s ease-in-out infinite;
 }
 
-.web-a {
-  animation-delay: .7s;
-}
+.web-a { animation-delay: .7s; }
 
 .web-b {
   animation-delay: 2.4s;
@@ -199,28 +175,17 @@ footer{display:flex;justify-content:space-between;color:#666;font-size:10px;padd
 }
 
 @keyframes topWeb {
-
   0%, 100% {
-    transform:
-      rotate(-8deg)
-      translateY(0);
+    transform: translate3d(0, 0, 0) rotate(-8deg);
   }
 
   50% {
-    transform:
-      rotate(8deg)
-      translateY(5px);
+    transform: translate3d(0, 9px, 0) rotate(8deg);
   }
 }
 
-
-/* =========================================================
-   👻 FANTÔME
-   ========================================================= */
-
+/* 👻 FANTÔME */
 .top-ghost {
-  display: inline-block;
-
   font-size: 21px;
 
   filter:
@@ -231,30 +196,18 @@ footer{display:flex;justify-content:space-between;color:#666;font-size:10px;padd
 }
 
 @keyframes topGhost {
-
   0%, 100% {
-    transform:
-      translateY(2px)
-      rotate(-3deg);
+    transform: translate3d(0, 4px, 0) rotate(-3deg);
   }
 
   50% {
-    transform:
-      translateY(-7px)
-      rotate(4deg);
+    transform: translate3d(0, -14px, 0) rotate(4deg);
   }
 }
 
-
-/* =========================================================
-   ✦ ÉTOILES
-   ========================================================= */
-
+/* ✦ ÉTOILES */
 .top-star {
-  display: inline-block;
-
   font-size: 19px;
-
   color: white;
 
   text-shadow:
@@ -264,73 +217,54 @@ footer{display:flex;justify-content:space-between;color:#666;font-size:10px;padd
   animation: topStar 1.8s ease-in-out infinite;
 }
 
-.star-a {
-  animation-delay: 0s;
-}
-
-.star-b {
-  animation-delay: .6s;
-}
-
-.star-c {
-  animation-delay: 1.2s;
-}
+.star-a { animation-delay: 0s; }
+.star-b { animation-delay: .6s; }
+.star-c { animation-delay: 1.2s; }
 
 @keyframes topStar {
-
   0%, 100% {
     opacity: .35;
-    transform: scale(.75) rotate(0deg);
+    transform: translate3d(0, 0, 0) scale(.75) rotate(0deg);
   }
 
   50% {
     opacity: 1;
-    transform: scale(1.25) rotate(90deg);
+    transform: translate3d(0, -6px, 0) scale(1.25) rotate(90deg);
   }
 }
 
-
-/* =========================================================
-   📱 IPHONE
-   ========================================================= */
-
+/* 📱 IPHONE */
 @media (max-width: 600px) {
-
   .top-halloween {
-    top: 78px;
-    gap: 10px;
+    top: 0;
+    height: 115px;
+    gap: 8px;
+    padding-top: 5px;
   }
 
-  .top-bat {
-    font-size: 17px;
-  }
-
-  .top-pumpkin {
-    font-size: 18px;
-  }
-
-  .top-web {
-    font-size: 18px;
-  }
-
-  .top-ghost {
-    font-size: 19px;
-  }
-
-  .top-star {
-    font-size: 16px;
-  }
+  .top-bat { font-size: 17px; }
+  .top-pumpkin { font-size: 18px; }
+  .top-web { font-size: 18px; }
+  .top-ghost { font-size: 19px; }
+  .top-star { font-size: 16px; }
 }
 
+/* Petit iPhone : on évite que les emojis débordent */
+@media (max-width: 375px) {
+  .top-halloween {
+    gap: 5px;
+  }
 
-/* =========================================================
-   ♿ RÉDUCTION DES ANIMATIONS
-   ========================================================= */
+  .top-bat { font-size: 15px; }
+  .top-pumpkin { font-size: 16px; }
+  .top-web { font-size: 16px; }
+  .top-ghost { font-size: 17px; }
+  .top-star { font-size: 14px; }
+}
 
+/* Accessibilité */
 @media (prefers-reduced-motion: reduce) {
-
-  .top-halloween * {
+  .top-halloween > span {
     animation: none !important;
   }
-
 }
