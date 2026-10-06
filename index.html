@@ -2,1461 +2,229 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width,initial-scale=1,viewport-fit=cover"
-  >
-
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#08040f">
-
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta
-    name="apple-mobile-web-app-status-bar-style"
-    content="black-translucent"
-  >
-  <meta
-    name="apple-mobile-web-app-title"
-    content="GO UP TIMER"
-  >
-
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="GO UP TIMER">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="icon-192.png">
-
   <title>GO UP TIMER — Halloween</title>
-
   <link rel="stylesheet" href="style.css">
-  
+
   <style>
-    /* =========================================================
-       GO UP TIMER — HALLOWEEN NEON
-       Mobile-first / aucun changement de logique
-       ========================================================= */
-
     :root {
-      --bg: #07030d;
-      --panel: rgba(15, 8, 25, .88);
-      --panel-2: rgba(25, 11, 39, .90);
-
-      --white: #ffffff;
-      --text: #f8f2ff;
-      --muted: #b5a8c2;
-      --dim: #766b82;
-
-      --orange: #ff7a18;
-      --orange-light: #ffad42;
-      --orange-hot: #ff4d00;
-
-      --purple: #8b35ff;
-      --purple-light: #bd70ff;
-      --violet: #6524c9;
-
-      --green: #37e59b;
-      --red: #ff496d;
-      --yellow: #ffd24a;
-
-      --radius: 20px;
-    }
-
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    html {
-      min-height: 100%;
-      background: var(--bg);
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      min-height: 100dvh;
-      color: var(--white);
-
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "SF Pro Display",
-        "SF Pro Text",
-        "Helvetica Neue",
-        Arial,
-        sans-serif;
-
-      background:
-        radial-gradient(
-          ellipse at 50% -10%,
-          rgba(255, 91, 0, .28),
-          transparent 32%
-        ),
-        radial-gradient(
-          ellipse at 100% 20%,
-          rgba(126, 38, 255, .25),
-          transparent 34%
-        ),
-        radial-gradient(
-          ellipse at 0% 80%,
-          rgba(92, 26, 177, .20),
-          transparent 36%
-        ),
-        linear-gradient(
-          160deg,
-          #07030d 0%,
-          #10051a 48%,
-          #06030b 100%
-        );
-
-      overflow-x: hidden;
-    }
-
-    /* Halo néon + petites particules */
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-
-      background:
-        radial-gradient(circle at 15% 12%, rgba(255,126,24,.18) 0 1px, transparent 2px),
-        radial-gradient(circle at 83% 19%, rgba(189,112,255,.22) 0 1px, transparent 2px),
-        radial-gradient(circle at 31% 52%, rgba(255,126,24,.14) 0 1px, transparent 2px),
-        radial-gradient(circle at 72% 67%, rgba(139,53,255,.18) 0 1px, transparent 2px),
-        radial-gradient(circle at 20% 88%, rgba(255,126,24,.15) 0 1px, transparent 2px);
-      background-size: 170px 170px, 220px 220px, 190px 190px, 240px 240px, 210px 210px;
-      opacity: .55;
-    }
-
-    /* =========================================================
-       HALLOWEEN V2 — ANIMATIONS
-       ========================================================= */
-
-    /* Brume animée */
-    body .app::before,
-    body .app::after {
-      content: "";
-      position: fixed;
-      left: -20vw;
-      width: 140vw;
-      height: 170px;
-      z-index: -1;
-      pointer-events: none;
-      border-radius: 50%;
-      filter: blur(28px);
-      opacity: .12;
-    }
-
-    body .app::before {
-      bottom: 8%;
-      background:
-        radial-gradient(ellipse, rgba(190,112,255,.55), transparent 68%);
-      animation: mistMove 13s ease-in-out infinite alternate;
-    }
-
-    body .app::after {
-      bottom: 23%;
-      background:
-        radial-gradient(ellipse, rgba(255,102,0,.45), transparent 68%);
-      animation: mistMove 17s ease-in-out infinite alternate-reverse;
-    }
-
-    @keyframes mistMove {
-      from {
-        transform: translateX(-7%) scaleX(.92);
-      }
-      to {
-        transform: translateX(7%) scaleX(1.08);
-      }
-    }
-
-    /* Chauves-souris décoratives */
-    .app {
-      isolation: isolate;
-    }
-
-    .app .bat {
-      position: fixed;
-      z-index: -1;
-      pointer-events: none;
-
-      font-size: 17px;
-      opacity: 0;
-      filter:
-        drop-shadow(0 0 7px rgba(139,53,255,.65));
-
-      animation: batFly 12s linear infinite;
-    }
-
-    .app .bat:nth-of-type(1) {
-      top: 13%;
-      left: -30px;
-      animation-delay: 1s;
-      animation-duration: 12s;
-    }
-
-    .app .bat:nth-of-type(2) {
-      top: 31%;
-      left: -35px;
-      font-size: 13px;
-      animation-delay: 5s;
-      animation-duration: 16s;
-    }
-
-    .app .bat:nth-of-type(3) {
-      top: 55%;
-      left: -30px;
-      font-size: 21px;
-      animation-delay: 8s;
-      animation-duration: 14s;
-    }
-
-    @keyframes batFly {
-      0% {
-        transform: translate3d(-10vw, 0, 0) scale(.8);
-        opacity: 0;
-      }
-      8% {
-        opacity: .5;
-      }
-      45% {
-        transform: translate3d(55vw, -28px, 0) scale(1);
-        opacity: .38;
-      }
-      75% {
-        transform: translate3d(105vw, 22px, 0) scale(.82);
-        opacity: .22;
-      }
-      100% {
-        transform: translate3d(125vw, -5px, 0) scale(.7);
-        opacity: 0;
-      }
-    }
-
-    /* Petites particules */
-    .app .spark {
-      position: fixed;
-      z-index: -1;
-      pointer-events: none;
-
-      width: 3px;
-      height: 3px;
-      border-radius: 50%;
-
-      background: #ff7a18;
-      box-shadow:
-        0 0 8px rgba(255,122,24,.9),
-        0 0 14px rgba(255,122,24,.35);
-
-      opacity: 0;
-
-      animation: sparkFloat 6s ease-in-out infinite;
-    }
-
-    .app .spark:nth-of-type(4) { left: 14%; bottom: 18%; animation-delay: .5s; }
-    .app .spark:nth-of-type(5) { left: 76%; bottom: 26%; animation-delay: 2s; }
-    .app .spark:nth-of-type(6) { left: 36%; bottom: 42%; animation-delay: 3.4s; }
-    .app .spark:nth-of-type(7) { left: 88%; bottom: 56%; animation-delay: 1.4s; }
-    .app .spark:nth-of-type(8) { left: 20%; bottom: 67%; animation-delay: 4.1s; }
-
-    @keyframes sparkFloat {
-      0%, 100% {
-        transform: translateY(12px) scale(.5);
-        opacity: 0;
-      }
-      35% {
-        opacity: .7;
-      }
-      70% {
-        transform: translateY(-42px) scale(1);
-        opacity: .25;
-      }
-    }
-
-    /* =========================================================
-       APP
-       ========================================================= */
-
-    .app {
-      position: relative;
-      z-index: 1;
-
-      width: 100%;
-      max-width: 620px;
-      margin: 0 auto;
-
-      padding:
-        calc(18px + env(safe-area-inset-top))
-        14px
-        calc(30px + env(safe-area-inset-bottom));
-    }
-
-    /* =========================================================
-       HEADER
-       ========================================================= */
-
-    .top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 12px;
-
-      margin-bottom: 10px;
-    }
-
-    .brand {
-      min-width: 0;
-    }
-
-    .eyebrow {
-      margin-bottom: 3px;
-
-      font-size: 12px;
-      line-height: 1;
-
-      font-weight: 900;
-      letter-spacing: .28em;
-
-      color: var(--orange-light);
-      text-transform: uppercase;
-
-      text-shadow:
-        0 0 8px rgba(255, 111, 0, .65);
-    }
-
-    h1 {
-      position: relative;
-      margin: 0;
-
-      font-size: clamp(48px, 15vw, 70px);
-      line-height: .86;
-
-      font-weight: 950;
-      letter-spacing: -.075em;
-
-      background:
-        linear-gradient(
-          105deg,
-          #fff8ef 0%,
-          #ffd7b0 22%,
-          #ff8a22 47%,
-          #b65aff 74%,
-          #7c32e9 100%
-        );
-
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-
-      filter:
-        drop-shadow(0 0 10px rgba(255, 103, 0, .30))
-        drop-shadow(0 0 22px rgba(135, 49, 255, .20));
-    }
-
-    .tagline {
-      margin-top: 12px;
-
-      font-size: 9px;
-      line-height: 1.3;
-
-      font-weight: 850;
-      letter-spacing: .20em;
-
-      color: #d8cce3;
-      text-transform: uppercase;
-    }
-
-    /* =========================================================
-       REFRESH
-       ========================================================= */
-
-    .refresh {
-      flex: 0 0 auto;
-
-      width: 47px;
-      height: 47px;
-      margin-top: 3px;
-
-      border: 1px solid rgba(255, 126, 24, .42);
-      border-radius: 16px;
-
-      color: var(--orange-light);
-
-      background:
-        linear-gradient(
-          145deg,
-          rgba(255, 126, 24, .16),
-          rgba(109, 42, 180, .15)
-        );
-
-      box-shadow:
-        0 10px 26px rgba(0,0,0,.30),
-        inset 0 1px 0 rgba(255,255,255,.10),
-        0 0 18px rgba(255, 94, 0, .13);
-
-      font-size: 26px;
-      line-height: 1;
-
-      cursor: pointer;
-
-      transition:
-        transform .15s ease,
-        border-color .15s ease,
-        box-shadow .15s ease;
-    }
-
-    .refresh:active {
-      transform: scale(.91) rotate(-18deg);
-    }
-
-    /* =========================================================
-       STATUS
-       ========================================================= */
-
-    .status {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      min-height: 23px;
-      margin: 5px 0 13px;
-
-      color: var(--muted);
-
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: .02em;
-
-      opacity: .92;
-    }
-
-    /* =========================================================
-       CARDS
-       ========================================================= */
-
-    .card {
-      position: relative;
-
-      margin-bottom: 11px;
-
-      border: 1px solid rgba(139, 53, 255, .32);
-      border-radius: var(--radius);
-
-      background:
-        linear-gradient(
-          145deg,
-          rgba(29, 12, 43, .91),
-          rgba(9, 5, 15, .94)
-        );
-
-      box-shadow:
-        0 16px 42px rgba(0,0,0,.38),
-        inset 0 1px 0 rgba(255,255,255,.055);
-
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-
-      overflow: hidden;
-    }
-
-    .card::after {
-      content: "";
-
-      position: absolute;
-      top: -100px;
-      right: -90px;
-
-      width: 190px;
-      height: 190px;
-
-      border-radius: 50%;
-
-      background:
-        radial-gradient(
-          circle,
-          rgba(255, 102, 0, .12),
-          transparent 70%
-        );
-
-      pointer-events: none;
-    }
-
-    .card::before {
-      content: "";
-
-      position: absolute;
-      left: 12px;
-      right: 12px;
-      top: 0;
-
-      height: 1px;
-
-      background:
-        linear-gradient(
-          90deg,
-          transparent,
-          rgba(255,126,24,.42),
-          rgba(139,53,255,.35),
-          transparent
-        );
-
-      pointer-events: none;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    /* =========================================================
-       TITRES
-       ========================================================= */
-
-    .label,
-    .section-title {
-      position: relative;
-      z-index: 2;
-
-      font-size: 10px;
-      font-weight: 900;
-
-      letter-spacing: .16em;
-      color: #e8deef;
-
-      text-transform: uppercase;
-    }
-
-    .label::before {
-      content: "🟠";
-      display: inline-block;
-
-      margin-right: 7px;
-
-      font-size: 12px;
-
-      filter:
-        drop-shadow(0 0 6px rgba(255, 115, 0, .65));
-    }
-
-    /* =========================================================
-       ÉVÉNEMENT EN DIRECT
-       ========================================================= */
-
-    .live {
-      padding: 13px 14px 11px;
-
-      border-color: rgba(255, 73, 109, .43);
-
-      background:
-        radial-gradient(
-          ellipse at 100% 0%,
-          rgba(255, 50, 82, .13),
-          transparent 38%
-        ),
-        linear-gradient(
-          145deg,
-          rgba(52, 12, 32, .90),
-          rgba(10, 5, 16, .94)
-        );
-    }
-
-    .live .label {
-      color: #ff9bac;
-    }
-
-    .live .label::before {
-      content: "🔴";
-      filter: none;
-    }
-
-    /* =========================================================
-       PROCHAIN ÉVÉNEMENT — COMPACT
-       ========================================================= */
-
-    .next {
-      padding: 13px 14px 12px;
-
-      border-color: rgba(255, 112, 20, .54);
-
-      background:
-        radial-gradient(
-          ellipse at 0% 0%,
-          rgba(255, 92, 0, .15),
-          transparent 38%
-        ),
-        radial-gradient(
-          ellipse at 100% 100%,
-          rgba(111, 42, 205, .18),
-          transparent 42%
-        ),
-        linear-gradient(
-          145deg,
-          rgba(39, 17, 48, .94),
-          rgba(8, 5, 14, .96)
-        );
-
-      box-shadow:
-        0 18px 48px rgba(0,0,0,.45),
-        0 0 30px rgba(255,87,0,.10),
-        inset 0 1px 0 rgba(255,255,255,.08);
-    }
-
-    .next::before {
-      content: "✦";
-
-      position: absolute;
-      right: 15px;
-      bottom: 9px;
-
-      color: rgba(255,126,24,.32);
-      font-size: 18px;
-
-      text-shadow:
-        0 0 12px rgba(255, 105, 0, .45);
-
-      pointer-events: none;
-    }
-
-    .event-title {
-      position: relative;
-      z-index: 2;
-
-      display: flex;
-      align-items: center;
-      gap: 9px;
-
-      margin-top: 8px;
-
-      min-width: 0;
-    }
-
-    .event-title span:first-child {
-      flex: 0 0 auto;
-
-      width: 47px;
-      height: 47px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      font-size: 33px;
-      line-height: 1;
-
-      border-radius: 13px;
-
-      background:
-        linear-gradient(
-          145deg,
-          rgba(255,126,24,.10),
-          rgba(126,48,214,.10)
-        );
-
-      border: 1px solid rgba(255,255,255,.08);
-
-      filter:
-        drop-shadow(0 0 8px rgba(255,255,255,.12));
-    }
-
-    .event-title span:last-child {
-      min-width: 0;
-
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-
-      font-size: clamp(27px, 8.5vw, 41px);
-      line-height: 1;
-
-      font-weight: 900;
-      letter-spacing: -.055em;
-
-      background:
-        linear-gradient(
-          100deg,
-          #fffaf4 0%,
-          #ffd6b2 43%,
-          #ff8a21 72%,
-          #bd70ff 100%
-        );
-
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-
-      filter:
-        drop-shadow(0 0 10px rgba(255,94,0,.16));
-    }
-
-    /* =========================================================
-       COUNTDOWN
-       ========================================================= */
-
-    .countdown {
-      position: relative;
-      z-index: 2;
-
-      margin-top: 9px;
-
-      font-variant-numeric: tabular-nums;
-
-      font-size: clamp(43px, 14vw, 70px);
-      line-height: .92;
-
-      font-weight: 850;
-      letter-spacing: -.065em;
-
-      white-space: nowrap;
-
-      background:
-        linear-gradient(
-          100deg,
-          #ff7a18 0%,
-          #ffad42 32%,
-          #bd70ff 69%,
-          #8d42ff 100%
-        );
-
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-
-      filter:
-        drop-shadow(0 0 10px rgba(255, 104, 0, .28))
-        drop-shadow(0 0 23px rgba(130, 55, 255, .18));
-    }
-
-    .sub {
-      position: relative;
-      z-index: 2;
-
-      margin-top: 5px;
-
-      font-size: 11px;
-      color: #aaa0b7;
-
-      letter-spacing: .02em;
-    }
-
-    /* =========================================================
-       PROGRESSION
-       ========================================================= */
-
-    .progress-wrap {
-      position: relative;
-      z-index: 2;
-
-      display: flex;
-      align-items: center;
-      gap: 9px;
-
-      margin-top: 9px;
-    }
-
-    .progress {
-      flex: 1;
-
-      height: 7px;
-
-      border-radius: 999px;
-      overflow: hidden;
-
-      background: rgba(45, 33, 58, .92);
-
-      border: 1px solid rgba(255,255,255,.05);
-
-      box-shadow:
-        inset 0 2px 4px rgba(0,0,0,.35);
-    }
-
-    .progress-bar {
-      width: 0%;
-      height: 100%;
-
-      border-radius: inherit;
-
-      background:
-        linear-gradient(
-          90deg,
-          #ff4d00,
-          #ff8b20 43%,
-          #a850ff 100%
-        );
-
-      box-shadow:
-        0 0 10px rgba(255, 90, 0, .52);
-
-      transition: width .5s ease;
-    }
-
-    .progress-percent {
-      min-width: 34px;
-
-      font-size: 10px;
-      font-weight: 800;
-
-      color: #d9cedf;
-      text-align: right;
-    }
-
-    /* =========================================================
-       NOTIFICATIONS
-       ========================================================= */
-
-    .notifications {
-      padding: 14px;
-    }
-
-    .notifications .section-title {
-      margin-bottom: 10px;
-    }
-
-    .push-button {
-      position: relative;
-
-      width: 100%;
-      min-height: 51px;
-
-      border: 1px solid rgba(255, 126, 24, .58);
-      border-radius: 16px;
-
-      color: white;
-
-      background:
-        linear-gradient(
-          105deg,
-          rgba(255, 91, 0, .90),
-          rgba(145, 50, 230, .88)
-        );
-
-      box-shadow:
-        0 0 22px rgba(255, 89, 0, .18),
-        0 9px 24px rgba(0,0,0,.25),
-        inset 0 1px 0 rgba(255,255,255,.15);
-
-      font-size: 11px;
-      font-weight: 900;
-      letter-spacing: .05em;
-
-      cursor: pointer;
-
-      transition:
-        transform .15s ease,
-        filter .15s ease;
-    }
-
-    .push-button:active {
-      transform: scale(.985);
-      filter: brightness(.92);
-    }
-
-    .push-status {
-      margin-top: 8px;
-
-      font-size: 11px;
-      line-height: 1.4;
-
-      color: #aaa1b5;
-    }
-
-    /* =========================================================
-       LISTE DES ÉVÉNEMENTS
-       ========================================================= */
-
-    .schedule {
-      padding: 14px 12px 12px;
-    }
-
-    .schedule .section-title {
-      display: flex;
-      align-items: center;
-
-      margin: 2px 4px 10px;
-    }
-
-    .schedule .section-title::before {
-      content: "⚪️";
-      margin-right: 8px;
-      font-size: 14px;
-
-      filter:
-        drop-shadow(0 0 5px rgba(145, 64, 255, .65));
-    }
-
-    #events {
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-    }
-
-    #events > * {
-      position: relative;
-
-      display: flex;
-      align-items: center;
-
-      min-height: 58px;
-      padding: 8px 10px;
-
-      border: 1px solid rgba(157,132,193,.17);
-      border-radius: 16px;
-
-      background:
-        linear-gradient(
-          135deg,
-          rgba(255,126,24,.055),
-          rgba(139,53,255,.055),
-          rgba(255,255,255,.018)
-        );
-
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.035),
-        0 5px 15px rgba(0,0,0,.13);
-
-      overflow: hidden;
-
-      transition:
-        transform .15s ease,
-        border-color .15s ease;
-    }
-
-    #events > *::before {
-      content: "";
-
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-
-      width: 3px;
-
-      background:
-        linear-gradient(
-          180deg,
-          #ff6a00,
-          #a94fff,
-          #6125bd
-        );
-
-      box-shadow:
-        0 0 9px rgba(255, 94, 0, .30);
-    }
-
-    #events > *:active {
-      transform: scale(.99);
-    }
-
-    #events img {
-      flex: 0 0 auto;
-
-      width: 38px;
-      height: 38px;
-
-      margin-left: 3px;
-
-      object-fit: contain;
-      border-radius: 10px;
-    }
-
-    #events strong {
-      font-size: 14px;
-      font-weight: 800;
-      color: #f7f1fb;
-    }
-
-    #events small {
-      font-size: 10px;
-      color: #a9a0b4;
-    }
-
-    /* =========================================================
-       ESPACEMENT ÉVÉNEMENT / HORAIRE
-       ========================================================= */
-
-    #events .row {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-    }
-
-    #events .row .name {
-      flex: 1;
-      min-width: 0;
-    }
-
-    #events .row .time {
-      flex: 0 0 auto;
-      margin-left: 14px;
-      white-space: nowrap;
-    }
-
-    /* =========================================================
-       FOOTER
-       ========================================================= */
-
-    footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-
-      margin-top: 1px;
-      padding: 4px 4px 0;
-
-      color: #70667a;
-
-      font-size: 8px;
-      letter-spacing: .035em;
-    }
-
-    /* =========================================================
-       PETITS IPHONE
-       ========================================================= */
-
-    @media (max-width: 375px) {
-      .app {
-        padding-left: 11px;
-        padding-right: 11px;
-      }
-
-      h1 {
-        font-size: 47px;
-      }
-
-      .refresh {
-        width: 44px;
-        height: 44px;
-      }
-
-      .card {
-        border-radius: 18px;
-      }
-
-      .next,
-      .live {
-        padding-left: 13px;
-        padding-right: 13px;
-      }
-
-      .event-title span:first-child {
-        width: 44px;
-        height: 44px;
-        font-size: 31px;
-      }
-
-      .event-title span:last-child {
-        font-size: 29px;
-      }
-
-      .countdown {
-        font-size: 42px;
-      }
-
-      #events > * {
-        min-height: 55px;
-      }
-    }
-
-    /* =========================================================
-       IPAD / GRAND ÉCRAN
-       ========================================================= */
-
-    @media (min-width: 700px) {
-      body {
-        padding: 25px 0;
-      }
-
-      .app {
-        max-width: 720px;
-      }
-
-      .countdown {
-        font-size: 70px;
-      }
-    }
-
-    /* =========================================================
-       GLOW ANIMÉ DES CARTES
-       ========================================================= */
-
-    .next {
-      animation: nextGlow 4.5s ease-in-out infinite;
-    }
-
-    @keyframes nextGlow {
-      0%, 100% {
-        box-shadow:
-          0 18px 48px rgba(0,0,0,.45),
-          0 0 24px rgba(255,87,0,.07),
-          inset 0 1px 0 rgba(255,255,255,.08);
-      }
-      50% {
-        box-shadow:
-          0 18px 48px rgba(0,0,0,.45),
-          0 0 34px rgba(255,87,0,.15),
-          0 0 16px rgba(139,53,255,.10),
-          inset 0 1px 0 rgba(255,255,255,.08);
-      }
-    }
-
-    .push-button {
-      animation: buttonPulse 3.5s ease-in-out infinite;
-    }
-
-    @keyframes buttonPulse {
-      0%, 100% {
-        box-shadow:
-          0 0 18px rgba(255,89,0,.14),
-          0 9px 24px rgba(0,0,0,.25),
-          inset 0 1px 0 rgba(255,255,255,.15);
-      }
-      50% {
-        box-shadow:
-          0 0 29px rgba(255,89,0,.27),
-          0 9px 24px rgba(0,0,0,.25),
-          inset 0 1px 0 rgba(255,255,255,.18);
-      }
-    }
-
-    /* Petite pulsation du symbole Halloween */
-    .next .label::before {
-      animation: pumpkinPulse 2.8s ease-in-out infinite;
-    }
-
-    @keyframes pumpkinPulse {
-      0%, 100% {
-        transform: scale(1) rotate(0deg);
-      }
-      50% {
-        transform: scale(1.12) rotate(-4deg);
-      }
-    }
-
-    /* =========================================================
-       ACCESSIBILITÉ
-       ========================================================= */
-
-    @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
-        animation: none !important;
-        animation-duration: .01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: .01ms !important;
-      }
-    }
+      --bg:#07030d; --panel:rgba(15,8,25,.88); --panel-2:rgba(25,11,39,.90);
+      --white:#fff; --text:#f8f2ff; --muted:#b5a8c2; --dim:#766b82;
+      --orange:#ff7a18; --orange-light:#ffad42; --orange-hot:#ff4d00;
+      --purple:#8b35ff; --purple-light:#bd70ff; --violet:#6524c9;
+      --green:#37e59b; --red:#ff496d; --yellow:#ffd24a; --radius:20px;
+    }
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    html{min-height:100%;background:var(--bg)}
+    body{margin:0;min-height:100vh;min-height:100dvh;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Arial,sans-serif;background:radial-gradient(ellipse at 50% -10%,rgba(255,91,0,.28),transparent 32%),radial-gradient(ellipse at 100% 20%,rgba(126,38,255,.25),transparent 34%),radial-gradient(ellipse at 0% 80%,rgba(92,26,177,.20),transparent 36%),linear-gradient(160deg,#07030d 0%,#10051a 48%,#06030b 100%);overflow-x:hidden}
+    body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(circle at 15% 12%,rgba(255,126,24,.18) 0 1px,transparent 2px),radial-gradient(circle at 83% 19%,rgba(189,112,255,.22) 0 1px,transparent 2px),radial-gradient(circle at 31% 52%,rgba(255,126,24,.14) 0 1px,transparent 2px),radial-gradient(circle at 72% 67%,rgba(139,53,255,.18) 0 1px,transparent 2px),radial-gradient(circle at 20% 88%,rgba(255,126,24,.15) 0 1px,transparent 2px);background-size:170px 170px,220px 220px,190px 190px,240px 240px,210px 210px;opacity:.55}
+    body .app::before,body .app::after{content:"";position:fixed;left:-20vw;width:140vw;height:170px;z-index:-1;pointer-events:none;border-radius:50%;filter:blur(28px);opacity:.12}
+    body .app::before{bottom:8%;background:radial-gradient(ellipse,rgba(190,112,255,.55),transparent 68%);animation:mistMove 13s ease-in-out infinite alternate}
+    body .app::after{bottom:23%;background:radial-gradient(ellipse,rgba(255,102,0,.45),transparent 68%);animation:mistMove 17s ease-in-out infinite alternate-reverse}
+    @keyframes mistMove{from{transform:translateX(-7%) scaleX(.92)}to{transform:translateX(7%) scaleX(1.08)}}
+    .app{isolation:isolate;position:relative;z-index:1;width:100%;max-width:620px;margin:0 auto;padding:calc(18px + env(safe-area-inset-top)) 14px calc(30px + env(safe-area-inset-bottom))}
+    .app .bat{position:fixed;z-index:-1;pointer-events:none;font-size:17px;opacity:0;filter:drop-shadow(0 0 7px rgba(139,53,255,.65));animation:batFly 12s linear infinite}
+    .app .bat:nth-of-type(1){top:13%;left:-30px;animation-delay:1s;animation-duration:12s}.app .bat:nth-of-type(2){top:31%;left:-35px;font-size:13px;animation-delay:5s;animation-duration:16s}.app .bat:nth-of-type(3){top:55%;left:-30px;font-size:21px;animation-delay:8s;animation-duration:14s}
+    @keyframes batFly{0%{transform:translate3d(-10vw,0,0) scale(.8);opacity:0}8%{opacity:.5}45%{transform:translate3d(55vw,-28px,0) scale(1);opacity:.38}75%{transform:translate3d(105vw,22px,0) scale(.82);opacity:.22}100%{transform:translate3d(125vw,-5px,0) scale(.7);opacity:0}}
+    .app .spark{position:fixed;z-index:-1;pointer-events:none;width:3px;height:3px;border-radius:50%;background:#ff7a18;box-shadow:0 0 8px rgba(255,122,24,.9),0 0 14px rgba(255,122,24,.35);opacity:0;animation:sparkFloat 6s ease-in-out infinite}
+    .app .spark:nth-of-type(4){left:14%;bottom:18%;animation-delay:.5s}.app .spark:nth-of-type(5){left:76%;bottom:26%;animation-delay:2s}.app .spark:nth-of-type(6){left:36%;bottom:42%;animation-delay:3.4s}.app .spark:nth-of-type(7){left:88%;bottom:56%;animation-delay:1.4s}.app .spark:nth-of-type(8){left:20%;bottom:67%;animation-delay:4.1s}
+    @keyframes sparkFloat{0%,100%{transform:translateY(12px) scale(.5);opacity:0}35%{opacity:.7}70%{transform:translateY(-42px) scale(1);opacity:.25}}
+    .top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:10px}.brand{min-width:0}.eyebrow{margin-bottom:3px;font-size:12px;line-height:1;font-weight:900;letter-spacing:.28em;color:var(--orange-light);text-transform:uppercase;text-shadow:0 0 8px rgba(255,111,0,.65)}
+    h1{position:relative;margin:0;font-size:clamp(48px,15vw,70px);line-height:.86;font-weight:950;letter-spacing:-.075em;background:linear-gradient(105deg,#fff8ef 0%,#ffd7b0 22%,#ff8a22 47%,#b65aff 74%,#7c32e9 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 10px rgba(255,103,0,.30)) drop-shadow(0 0 22px rgba(135,49,255,.20))}
+    .tagline{margin-top:12px;font-size:9px;line-height:1.3;font-weight:850;letter-spacing:.20em;color:#d8cce3;text-transform:uppercase}
+    .header-actions{display:flex;align-items:flex-start;gap:7px;flex:0 0 auto}
+    .refresh,.notification-bell{flex:0 0 auto;width:43px;height:43px;margin-top:3px;border:1px solid rgba(255,126,24,.42);border-radius:14px;color:var(--orange-light);background:linear-gradient(145deg,rgba(255,126,24,.16),rgba(109,42,180,.15));box-shadow:0 10px 26px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.10),0 0 18px rgba(255,94,0,.13);cursor:pointer;transition:transform .15s ease,border-color .15s ease,box-shadow .15s ease}
+    .refresh{font-size:25px;line-height:1}.refresh:active{transform:scale(.91) rotate(-18deg)}
+    .notification-bell{position:relative;display:flex;align-items:center;justify-content:center;font-size:20px;line-height:1}
+    .notification-bell:active{transform:scale(.91)}
+    .notification-bell.enabled{border-color:rgba(55,229,155,.55);box-shadow:0 10px 26px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.10),0 0 18px rgba(55,229,155,.16)}
+    .notification-dot{position:absolute;right:5px;top:5px;width:9px;height:9px;border-radius:50%;background:var(--green);border:2px solid #12091b;box-shadow:0 0 8px rgba(55,229,155,.85);display:none}
+    .notification-bell.enabled .notification-dot{display:block}
+    .status{display:flex;align-items:center;justify-content:center;min-height:23px;margin:5px 0 13px;color:var(--muted);font-size:11px;font-weight:600;letter-spacing:.02em;opacity:.92}
+    .card{position:relative;margin-bottom:11px;border:1px solid rgba(139,53,255,.32);border-radius:var(--radius);background:linear-gradient(145deg,rgba(29,12,43,.91),rgba(9,5,15,.94));box-shadow:0 16px 42px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.055);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);overflow:hidden}
+    .card::after{content:"";position:absolute;top:-100px;right:-90px;width:190px;height:190px;border-radius:50%;background:radial-gradient(circle,rgba(255,102,0,.12),transparent 70%);pointer-events:none}
+    .card::before{content:"";position:absolute;left:12px;right:12px;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,126,24,.42),rgba(139,53,255,.35),transparent);pointer-events:none}
+    .hidden{display:none!important}.label,.section-title{position:relative;z-index:2;font-size:10px;font-weight:900;letter-spacing:.16em;color:#e8deef;text-transform:uppercase}.label::before{content:"🟠";display:inline-block;margin-right:7px;font-size:12px;filter:drop-shadow(0 0 6px rgba(255,115,0,.65))}
+    .live{padding:13px 14px 11px;border-color:rgba(255,73,109,.43);background:radial-gradient(ellipse at 100% 0%,rgba(255,50,82,.13),transparent 38%),linear-gradient(145deg,rgba(52,12,32,.90),rgba(10,5,16,.94))}
+    .live .label{color:#ff9bac}.live .label::before{content:"🔴";filter:none}
+    .next{padding:13px 14px 12px;border-color:rgba(255,112,20,.54);background:radial-gradient(ellipse at 0% 0%,rgba(255,92,0,.15),transparent 38%),radial-gradient(ellipse at 100% 100%,rgba(111,42,205,.18),transparent 42%),linear-gradient(145deg,rgba(39,17,48,.94),rgba(8,5,14,.96));box-shadow:0 18px 48px rgba(0,0,0,.45),0 0 30px rgba(255,87,0,.10),inset 0 1px 0 rgba(255,255,255,.08)}
+    .next::before{content:"✦";position:absolute;right:15px;bottom:9px;color:rgba(255,126,24,.32);font-size:18px;text-shadow:0 0 12px rgba(255,105,0,.45);pointer-events:none}
+    .event-title{position:relative;z-index:2;display:flex;align-items:center;gap:9px;margin-top:8px;min-width:0}.event-title span:first-child{flex:0 0 auto;width:47px;height:47px;display:flex;align-items:center;justify-content:center;font-size:33px;line-height:1;border-radius:13px;background:linear-gradient(145deg,rgba(255,126,24,.10),rgba(126,48,214,.10));border:1px solid rgba(255,255,255,.08);filter:drop-shadow(0 0 8px rgba(255,255,255,.12))}
+    .event-title span:last-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:clamp(27px,8.5vw,41px);line-height:1;font-weight:900;letter-spacing:-.055em;background:linear-gradient(100deg,#fffaf4 0%,#ffd6b2 43%,#ff8a21 72%,#bd70ff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 10px rgba(255,94,0,.16))}
+    .countdown{position:relative;z-index:2;margin-top:9px;font-variant-numeric:tabular-nums;font-size:clamp(43px,14vw,70px);line-height:.92;font-weight:850;letter-spacing:-.065em;white-space:nowrap;background:linear-gradient(100deg,#ff7a18 0%,#ffad42 32%,#bd70ff 69%,#8d42ff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 10px rgba(255,104,0,.28)) drop-shadow(0 0 23px rgba(130,55,255,.18))}
+    .sub{position:relative;z-index:2;margin-top:5px;font-size:11px;color:#aaa0b7;letter-spacing:.02em}.progress-wrap{position:relative;z-index:2;display:flex;align-items:center;gap:9px;margin-top:9px}.progress{flex:1;height:7px;border-radius:999px;overflow:hidden;background:rgba(45,33,58,.92);border:1px solid rgba(255,255,255,.05);box-shadow:inset 0 2px 4px rgba(0,0,0,.35)}.progress-bar{width:0%;height:100%;border-radius:inherit;background:linear-gradient(90deg,#ff4d00,#ff8b20 43%,#a850ff 100%);box-shadow:0 0 10px rgba(255,90,0,.52);transition:width .5s ease}.progress-percent{min-width:34px;font-size:10px;font-weight:800;color:#d9cedf;text-align:right}
+
+    /* PAGE NOTIFICATIONS */
+    .notification-page{display:none}
+    .notification-page.visible{display:block}
+    .notification-page .back-button{width:100%;min-height:43px;margin-bottom:10px;border:1px solid rgba(139,53,255,.34);border-radius:14px;background:rgba(255,255,255,.04);color:#e8deef;font-size:11px;font-weight:850;letter-spacing:.06em}
+    .notification-panel{padding:18px 15px}
+    .notification-icon{width:62px;height:62px;margin:2px auto 12px;border-radius:19px;display:flex;align-items:center;justify-content:center;font-size:31px;background:linear-gradient(145deg,rgba(255,126,24,.16),rgba(139,53,255,.18));border:1px solid rgba(255,126,24,.32);box-shadow:0 0 25px rgba(255,94,0,.12)}
+    .notification-panel h2{margin:0;text-align:center;font-size:25px;letter-spacing:-.04em}.notification-panel .intro{text-align:center;color:#b5a8c2;font-size:12px;line-height:1.5;margin:8px 10px 18px}
+    .notification-step{display:flex;gap:11px;align-items:flex-start;margin:10px 0;padding:12px;border:1px solid rgba(157,132,193,.17);border-radius:15px;background:rgba(255,255,255,.025)}
+    .notification-step .number{flex:0 0 auto;width:27px;height:27px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:rgba(255,126,24,.13);color:#ffad42;font-weight:900}.notification-step strong{display:block;font-size:12px;color:#f8f2ff}.notification-step span{display:block;margin-top:3px;font-size:10px;line-height:1.45;color:#aaa1b5}
+    .notification-page .push-button{margin-top:8px}
+    .push-button{position:relative;width:100%;min-height:51px;border:1px solid rgba(255,126,24,.58);border-radius:16px;color:#fff;background:linear-gradient(105deg,rgba(255,91,0,.90),rgba(145,50,230,.88));box-shadow:0 0 22px rgba(255,89,0,.18),0 9px 24px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.15);font-size:11px;font-weight:900;letter-spacing:.05em;cursor:pointer}
+    .push-button:active{transform:scale(.985);filter:brightness(.92)}.push-button.enabled{border-color:rgba(55,229,155,.5);background:linear-gradient(105deg,rgba(31,164,111,.85),rgba(57,111,220,.85))}
+    .push-status{margin-top:8px;font-size:11px;line-height:1.4;color:#aaa1b5;text-align:center}
+    .schedule{padding:14px 12px 12px}.schedule .section-title{display:flex;align-items:center;margin:2px 4px 10px}.schedule .section-title::before{content:"⚪️";margin-right:8px;font-size:14px;filter:drop-shadow(0 0 5px rgba(145,64,255,.65))}
+    #events{display:flex;flex-direction:column;gap:7px}#events>*{position:relative;display:flex;align-items:center;min-height:58px;padding:8px 10px;border:1px solid rgba(157,132,193,.17);border-radius:16px;background:linear-gradient(135deg,rgba(255,126,24,.055),rgba(139,53,255,.055),rgba(255,255,255,.018));box-shadow:inset 0 1px 0 rgba(255,255,255,.035),0 5px 15px rgba(0,0,0,.13);overflow:hidden}#events>*::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#ff6a00,#a94fff,#6125bd);box-shadow:0 0 9px rgba(255,94,0,.30)}#events img{flex:0 0 auto;width:38px;height:38px;margin-left:3px;object-fit:contain;border-radius:10px}#events strong{font-size:14px;font-weight:800;color:#f7f1fb}#events small{font-size:10px;color:#a9a0b4}#events .row{display:flex;align-items:center;gap:9px}#events .row .name{flex:1;min-width:0}#events .row .time{flex:0 0 auto;margin-left:14px;white-space:nowrap}
+    footer{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:1px;padding:4px 4px 0;color:#70667a;font-size:8px;letter-spacing:.035em}
+    .next{animation:nextGlow 4.5s ease-in-out infinite}@keyframes nextGlow{0%,100%{box-shadow:0 18px 48px rgba(0,0,0,.45),0 0 24px rgba(255,87,0,.07),inset 0 1px 0 rgba(255,255,255,.08)}50%{box-shadow:0 18px 48px rgba(0,0,0,.45),0 0 34px rgba(255,87,0,.15),0 0 16px rgba(139,53,255,.10),inset 0 1px 0 rgba(255,255,255,.08)}}
+    .next .label::before{animation:pumpkinPulse 2.8s ease-in-out infinite}@keyframes pumpkinPulse{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.12) rotate(-4deg)}}
+    @media(max-width:375px){.app{padding-left:11px;padding-right:11px}h1{font-size:47px}.refresh,.notification-bell{width:41px;height:41px}.card{border-radius:18px}.next,.live{padding-left:13px;padding-right:13px}.event-title span:first-child{width:44px;height:44px;font-size:31px}.event-title span:last-child{font-size:29px}.countdown{font-size:42px}#events>*{min-height:55px}}
+    @media(min-width:700px){body{padding:25px 0}.app{max-width:720px}.countdown{font-size:70px}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.01ms!important}}
   </style>
 </head>
 
 <body>
-
 <main class="app">
 
-  <!-- =====================================================
-       🎃 DÉCORATION HALLOWEEN DU HEADER
-       ===================================================== -->
+  <header class="top">
+    <div class="brand">
+      <div class="eyebrow">🚀 GO UP</div>
+      <h1>TIMER</h1>
+      <div class="tagline">NE RATE AUCUN ÉVÉNEMENT</div>
+    </div>
 
-  <div class="top-halloween" aria-hidden="true">
-
-    <span class="top-bat bat-a">🦇</span>
-    <span class="top-bat bat-b">🦇</span>
-    <span class="top-bat bat-c">🦇</span>
-
-    <span class="top-pumpkin pumpkin-a">🎃</span>
-    <span class="top-pumpkin pumpkin-b">🎃</span>
-
-    <span class="top-web web-a">🕸️</span>
-    <span class="top-web web-b">🕸️</span>
-
-    <span class="top-ghost">👻</span>
-
-    <span class="top-star star-a">✦</span>
-    <span class="top-star star-b">✦</span>
-    <span class="top-star star-c">✦</span>
-
-  </div>
-
-
-    <!-- =====================================================
-         HEADER
-         ===================================================== -->
-
-    <header class="top">
-
-      <div class="brand">
-
-        <div class="eyebrow">
-          🚀 GO UP
-        </div>
-
-        <h1>TIMER</h1>
-
-        <div class="tagline">
-          NE RATE AUCUN ÉVÉNEMENT
-        </div>
-
-      </div>
-
-      <button
-        id="refresh"
-        class="refresh"
-        aria-label="Actualiser"
-      >
-        ↻
+    <div class="header-actions">
+      <button id="notificationBell" class="notification-bell" aria-label="Notifications">
+        🔔
+        <span class="notification-dot"></span>
       </button>
+      <button id="refresh" class="refresh" aria-label="Actualiser">↻</button>
+    </div>
+  </header>
 
-    </header>
+  <section id="status" class="status" aria-live="polite">BY 🍁𝔸𝕝𝕒𝕟🍁</section>
 
-
-    <!-- =====================================================
-         STATUT API
-         ===================================================== -->
-
-    <section
-      id="status"
-      class="status"
-      aria-live="polite"
-    >
-      BY 🍁𝔸𝕝𝕒𝕟🍁
-    </section>
-
-
-    <!-- =====================================================
-         ÉVÉNEMENT EN DIRECT
-         ===================================================== -->
-
-    <section
-      id="liveCard"
-      class="card live hidden"
-    >
-
-      <div class="label">
-        ÉVÉNEMENT EN DIRECT
-      </div>
-
+  <section id="mainPage">
+    <section id="liveCard" class="card live hidden">
+      <div class="label">ÉVÉNEMENT EN DIRECT</div>
       <div class="event-title">
-
         <span id="liveEmoji"></span>
-
         <span id="liveName"></span>
-
       </div>
-
-      <div
-        id="liveCountdown"
-        class="countdown"
-      >
-        --:--
-      </div>
-
-      <div class="sub">
-        temps restant
-      </div>
-
+      <div id="liveCountdown" class="countdown">--:--</div>
+      <div class="sub">temps restant</div>
     </section>
 
-
-    <!-- =====================================================
-         PROCHAIN ÉVÉNEMENT
-         ===================================================== -->
-
-    <section
-      id="nextCard"
-      class="card next"
-    >
-
-      <div class="label">
-        PROCHAIN ÉVÉNEMENT
-      </div>
-
+    <section id="nextCard" class="card next">
+      <div class="label">PROCHAIN ÉVÉNEMENT</div>
       <div class="event-title">
-
         <span id="nextEmoji"></span>
-
-        <span id="nextName">
-          —
-        </span>
-
+        <span id="nextName">—</span>
       </div>
-
-      <div
-        id="nextCountdown"
-        class="countdown"
-      >
-        --:--:--
-      </div>
-
-      <div
-        id="nextTime"
-        class="sub"
-      >
-        —
-      </div>
-
-      <!-- Barre visuelle -->
-
+      <div id="nextCountdown" class="countdown">--:--:--</div>
+      <div id="nextTime" class="sub">—</div>
       <div class="progress-wrap">
-
-        <div class="progress">
-
-          <div
-            id="progressBar"
-            class="progress-bar"
-          ></div>
-
-        </div>
-
-        <div
-          id="progressPercent"
-          class="progress-percent"
-        >
-          —
-        </div>
-
+        <div class="progress"><div id="progressBar" class="progress-bar"></div></div>
+        <div id="progressPercent" class="progress-percent">—</div>
       </div>
-
     </section>
-
-
-    <!-- =====================================================
-         NOTIFICATIONS
-         ===================================================== -->
-
-    <section class="card notifications">
-
-      <div class="section-title">
-        🔔 NOTIFICATIONS
-      </div>
-
-      <button
-        id="pushButton"
-        class="push-button"
-      >
-        🔔 ACTIVER LES NOTIFICATIONS
-      </button>
-
-      <div
-        id="pushStatus"
-        class="push-status"
-      >
-        Ajoute l'App à ton écran d'accueil ➡️ Ouvre-la ➡️ Active les notifications
-      </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         TOUS LES ÉVÉNEMENTS
-         ===================================================== -->
 
     <section class="card schedule">
+      <div class="section-title">TOUS LES ÉVÉNEMENTS</div>
+      <div id="events"></div>
+    </section>
+  </section>
 
-      <div class="section-title">
-        TOUS LES ÉVÉNEMENTS
+  <section id="notificationPage" class="notification-page">
+    <button id="backNotifications" class="back-button">← RETOUR AU TIMER</button>
+
+    <section class="card notification-panel">
+      <div class="notification-icon">🔔</div>
+      <h2>NOTIFICATIONS GO UP</h2>
+      <div class="intro">
+        Ne rate aucun événement. Reçois une alerte
+        <strong>10 minutes avant</strong> chaque événement GO UP.
       </div>
 
-      <div id="events"></div>
+      <div class="notification-step">
+        <div class="number">1</div>
+        <div>
+          <strong>Ajoute GO UP TIMER à ton écran d'accueil</strong>
+          <span>Sur iPhone : Partager ↗ → « Sur l'écran d'accueil ».</span>
+        </div>
+      </div>
 
+      <div class="notification-step">
+        <div class="number">2</div>
+        <div>
+          <strong>Ouvre GO UP TIMER depuis ton écran d'accueil</strong>
+          <span>Les notifications Web Push fonctionnent depuis l'application installée.</span>
+        </div>
+      </div>
+
+      <div class="notification-step">
+        <div class="number">3</div>
+        <div>
+          <strong>Active les notifications</strong>
+          <span>Autorise les notifications lorsque ton appareil te le demande.</span>
+        </div>
+      </div>
+
+      <button id="pushButton" class="push-button">🔔 ACTIVER LES NOTIFICATIONS</button>
+      <div id="pushStatus" class="push-status">
+        Active les alertes GO UP 10 minutes avant chaque événement.
+      </div>
     </section>
+  </section>
 
+  <footer>
+    <span id="updated">Dernière mise à jour : —</span>
+    <span>Europe/Paris</span>
+  </footer>
+</main>
 
-    <!-- =====================================================
-         FOOTER
-         ===================================================== -->
+<script src="app.js"></script>
 
-    <footer>
+<script>
+(function(){
+  const bar=document.getElementById("progressBar");
+  const percent=document.getElementById("progressPercent");
+  if(!bar||!percent)return;
 
-      <span id="updated">
-        Dernière mise à jour : —
-      </span>
+  function updateProgress(){
+    const countdown=document.getElementById("nextCountdown");
+    if(!countdown)return;
 
-      <span>
-        Europe/Paris
-      </span>
+    const value=countdown.textContent.trim();
+    const match=value.match(/^(\d+):(\d{2}):(\d{2})$/);
 
-    </footer>
+    if(!match){
+      bar.style.width="0%";
+      percent.textContent="—";
+      return;
+    }
 
-  </main>
+    const hours=Number(match[1]);
+    const minutes=Number(match[2]);
+    const seconds=Number(match[3]);
+    const remaining=hours*3600+minutes*60+seconds;
+    const tenMinutes=10*60;
 
+    if(remaining<=tenMinutes&&remaining>0){
+      const progress=((tenMinutes-remaining)/tenMinutes)*100;
+      const safeProgress=Math.max(0,Math.min(100,progress));
+      bar.style.width=safeProgress.toFixed(0)+"%";
+      percent.textContent=Math.round(safeProgress)+"%";
+    }else{
+      bar.style.width="0%";
+      percent.textContent="—";
+    }
+  }
 
-  <script src="app.js"></script>
-
-
-  <!-- =======================================================
-       PROGRESSION DU PROCHAIN ÉVÉNEMENT
-       ======================================================= -->
-
-  <script>
-    /*
-     * Cette partie ajoute uniquement l'affichage de la barre
-     * de progression.
-     *
-     * Elle ne modifie pas le fonctionnement de l'API.
-     */
-
-    (function () {
-
-      const bar = document.getElementById("progressBar");
-      const percent = document.getElementById("progressPercent");
-
-      if (!bar || !percent) return;
-
-      function updateProgress() {
-
-        const countdown = document.getElementById("nextCountdown");
-
-        if (!countdown) return;
-
-        const value = countdown.textContent.trim();
-
-        const match = value.match(
-          /^(\d+):(\d{2}):(\d{2})$/
-        );
-
-        if (!match) {
-          bar.style.width = "0%";
-          percent.textContent = "—";
-          return;
-        }
-
-        const hours = Number(match[1]);
-        const minutes = Number(match[2]);
-        const seconds = Number(match[3]);
-
-        const remaining =
-          hours * 3600 +
-          minutes * 60 +
-          seconds;
-
-        const tenMinutes = 10 * 60;
-
-        if (remaining <= tenMinutes && remaining > 0) {
-
-          const progress =
-            ((tenMinutes - remaining) / tenMinutes) * 100;
-
-          const safeProgress =
-            Math.max(0, Math.min(100, progress));
-
-          bar.style.width =
-            safeProgress.toFixed(0) + "%";
-
-          percent.textContent =
-            Math.round(safeProgress) + "%";
-
-        } else {
-
-          bar.style.width = "0%";
-          percent.textContent = "—";
-
-        }
-      }
-
-      updateProgress();
-
-      setInterval(updateProgress, 1000);
-
-    })();
-  </script>
-
+  updateProgress();
+  setInterval(updateProgress,1000);
+})();
+</script>
 </body>
 </html>
