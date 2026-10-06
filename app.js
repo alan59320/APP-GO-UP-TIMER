@@ -33,8 +33,6 @@ function render(){
   // ÉVÉNEMENT EN DIRECT
   // =========================
 
-  // Affiche uniquement un événement qui existe
-  // et dont l'heure de fin n'est pas dépassée.
   if(
     live &&
     live.end &&
@@ -46,9 +44,6 @@ function render(){
     $("liveCountdown").textContent=
       duration(Number(live.end)-now,false);
   }else{
-    // L'événement est terminé : on masque
-    // immédiatement la carte même si l'API n'a
-    // pas encore été actualisée.
     $("liveCard").classList.add("hidden");
     $("liveEmoji").textContent="";
     $("liveName").textContent="";
@@ -145,6 +140,8 @@ async function load(){
     render();
 
   }catch(e){
+    console.error("API:",e);
+
     $("status").textContent=
       "API inaccessible — nouvelle tentative automatique";
 
@@ -290,6 +287,8 @@ async function enablePush(){
           urlBase64ToUint8Array(publicKey)
       });
 
+    updateNotificationBell();
+
     const response=await fetch(
       "/api/push/subscribe",
       {
@@ -360,6 +359,8 @@ async function disablePush(){
 
     pushSubscription=null;
 
+    updateNotificationBell();
+
     $("pushStatus").textContent=
       "Notifications désactivées.";
 
@@ -388,6 +389,75 @@ async function setupPush(){
   }
 }
 
+
+/* =========================
+   INTERFACE NOTIFICATIONS
+   ========================= */
+
+function showNotificationPage(){
+  const mainPage=$("mainPage");
+  const notificationPage=$("notificationPage");
+
+  if(mainPage) mainPage.style.display="none";
+  if(notificationPage) notificationPage.classList.add("visible");
+
+  updatePushUI();
+}
+
+function hideNotificationPage(){
+  const mainPage=$("mainPage");
+  const notificationPage=$("notificationPage");
+
+  if(notificationPage) notificationPage.classList.remove("visible");
+  if(mainPage) mainPage.style.display="block";
+
+  updatePushUI();
+}
+
+function updateNotificationBell(){
+  const bell=$("notificationBell");
+  if(!bell) return;
+
+  if(pushSubscription){
+    bell.classList.add("enabled");
+    bell.setAttribute(
+      "aria-label",
+      "Notifications activées"
+    );
+    bell.title="Notifications activées";
+  }else{
+    bell.classList.remove("enabled");
+    bell.setAttribute(
+      "aria-label",
+      "Activer les notifications"
+    );
+    bell.title="Activer les notifications";
+  }
+}
+
+/* On conserve le gros bouton uniquement dans la page
+   d'explication. La cloche reste visible dans le header. */
+const originalUpdatePushUI=updatePushUI;
+
+updatePushUI=async function(){
+  await originalUpdatePushUI();
+  updateNotificationBell();
+};
+
+$("notificationBell")?.addEventListener(
+  "click",
+  ()=>{
+    showNotificationPage();
+  }
+);
+
+$("backNotifications")?.addEventListener(
+  "click",
+  ()=>{
+    hideNotificationPage();
+  }
+);
+
 $("refresh").addEventListener("click",load);
 
 $("pushButton")?.addEventListener(
@@ -407,8 +477,7 @@ setupPush();
 // Mise à jour visuelle du compteur chaque seconde.
 setInterval(render,1000);
 
-// API actualisée toutes les 10 secondes au lieu
-// de toutes les 60 secondes.
+// API actualisée toutes les 10 secondes.
 setInterval(load,10000);
 
 document.addEventListener(
